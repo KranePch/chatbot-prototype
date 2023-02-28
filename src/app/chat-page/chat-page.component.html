@@ -22,14 +22,13 @@
           <h4>Loading</h4>
         </div>
         <!-- Set A Ng Repeat For Our Messages || Check To See If Our Value (Which Is Set Via Ng Click) Is Equal To The Id Of The Message List We Want To Show -->
+        
         <div class='message-wrap' *ngFor='let message of chats' [hidden]='value != message.id'>
-        <div *ngIf='value == message.id'>
           <!-- Repeat Each Item In The Array Seperately -->
           <div class='message' *ngFor='let item of message.messages; index as i'>
             <p>{{item}}</p>
             <img src='{{message.avatar}}'>
           </div>
-        </div>
         </div>
         <footer>
           <form #textForm="ngForm" (ngSubmit)="add(textForm.value)">

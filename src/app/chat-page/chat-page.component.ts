@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 declare var $: any;
+declare var $: any;
 
 @Component({
   selector: 'app-chat-page',
@@ -8,6 +9,9 @@ declare var $: any;
   styleUrls: ['./chat-page.component.scss']
 })
 export class ChatPageComponent {
+  text: any;
+  value: any;
+  index = 0;
   chats = [{
     id: 0,
     username: "Leela",
@@ -82,62 +86,65 @@ export class ChatPageComponent {
   uid(ix: any) {
     console.log(ix);
 
+    // setTimeout(() => {
+    //   this.value = ix;
+    // }, 750);
+
     setTimeout(() => {
       this.value = ix;
     }, 750);
   }
 
-  function($: any): void {
+  index = 0;
+  
+  initScroll() {
+    $(".message-wrap").animate({ 
+      scrollTop: $("main").height() 
+    }, 1000);
+  }
+  
+  scroll() {
+    $(".message-wrap").animate({
+      scrollTop: 9000
+    }, 1000);
+  }
+  
+  $("input[type='submit']").click(function() {
+    scroll();
+  });
 
-    var index = 0;
-    
-    function initScroll() {
-      $(".message-wrap").animate({ 
-        scrollTop: $("main").height() 
-      }, 1000);
-    }
-    
-    function scroll() {
-      $(".message-wrap").animate({
-        scrollTop: 9000
-      }, 1000);
-    }
-    
-    $("input[type='submit']").click(function() {
-      scroll();
-    });
-  
-    $("aside").find("li").click(function() {
-      initScroll();
-      $(".init").animate({
+  $("aside").find("li").click(function() {
+    initScroll();
+    $(".init").animate({
+      'opacity': '0'
+    }, 500);
+  });
+
+  $("aside").find("li").click(function() {
+    if (index == 1) {
+      index = 0;
+      $(".message-wrap").find(".message").css({
+        'opacity': '1'
+      });
+    } else {
+      index = 0;
+      $(".message-wrap").find(".message").css({
         'opacity': '0'
-      }, 500);
-    });
-  
-    $("aside").find("li").click(function() {
-      if (index == 1) {
+      });
+      $(".loader").delay(500).animate({
+        'opacity': '1'
+      });
+      setTimeout(function() {
         index = 0;
         $(".message-wrap").find(".message").css({
           'opacity': '1'
         });
-      } else {
-        index = 0;
-        $(".message-wrap").find(".message").css({
+        $(".loader").animate({
           'opacity': '0'
         });
-        $(".loader").delay(500).animate({
-          'opacity': '1'
-        });
-        setTimeout(function() {
-          index = 0;
-          $(".message-wrap").find(".message").css({
-            'opacity': '1'
-          });
-          $(".loader").animate({
-            'opacity': '0'
-          });
-        }, 3000)
-      }
-    });
-  };
+      }, 3000)
+    }
+  });
+}
+
 }
