@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+declare var $: any;
 
 @Component({
   selector: 'app-chat-page',
@@ -6,6 +7,9 @@ import { Component } from '@angular/core';
   styleUrls: ['./chat-page.component.scss']
 })
 export class ChatPageComponent {
+  text: any;
+  value: any;
+  index = 0;
   chats = [{
     id: 0,
     username: "Leela",
@@ -53,9 +57,6 @@ export class ChatPageComponent {
     ]
   }];
 
-  text: any;
-  value: any;
-
   add() {
     var vlu = this.value;
     if(this.text) {
@@ -68,22 +69,29 @@ export class ChatPageComponent {
   uid(ix: any) {
     console.log(ix);
 
-    function ixy() {
-      this.value = ix;
-    }
+    // function ixy() {
+    //   this.value = ix;
+    // }
     // Delay Our Scope Change To Create A Smoother Transition
     // $timeout(ixy, 750);
-  }
 
-  index = 0;
+    setTimeout(() => {
+      this.value = ix;
+    }, 750);
+  }
   
-  initScroll() {
+  // Animation Styles
+  function() {
+
+  var index = 0;
+  
+  function initScroll() {
     $(".message-wrap").animate({ 
       scrollTop: $("main").height() 
     }, 1000);
   }
   
-  scroll() {
+  function scroll() {
     $(".message-wrap").animate({
       scrollTop: 9000
     }, 1000);
@@ -125,4 +133,6 @@ export class ChatPageComponent {
       }, 3000)
     }
   });
+}
+
 }
