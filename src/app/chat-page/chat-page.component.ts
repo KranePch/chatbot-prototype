@@ -1,4 +1,6 @@
+import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
+declare var $: any;
 
 @Component({
   selector: 'app-chat-page',
@@ -18,7 +20,8 @@ export class ChatPageComponent {
       "Um, is this the boring, peaceful kind of taking to the streets",
       "That's right, baby. I ain't your loverboy Flexo, the guy you love so much. You even love anyone pretending to be him!"
     ]
-  }, {
+  }, 
+  {
     id: 1,
     username: "Bender",
     avatar: "http://orig02.deviantart.net/9689/f/2012/027/9/c/mr_bender______classy__by_sgtconker1r-d4nqpzu.png",
@@ -29,7 +32,8 @@ export class ChatPageComponent {
       "Who are you, my warranty?!",
       "I will destroy you"
     ]
-  }, {
+  },
+  {
     id: 2,
     username: "Fry",
     avatar: "http://www.wallpaperno.com/thumbnails/detail/20121027/futurama%20fry%201920x1080%20wallpaper_www.wallpaperno.com_68.jpg",
@@ -51,78 +55,89 @@ export class ChatPageComponent {
       "Now, now. Perfectly symmetrical violence never solved anything",
       "Dissect its brain"
     ]
-  }];
-
+  }
+  ];
   text: any;
   value: any;
 
-  add() {
+  constructor(private http: HttpClient) {
+
+  }
+
+  add(textForm: any) {
     var vlu = this.value;
     if(this.text) {
       this.chats[vlu].messages.push(this.text);
       this.text = '';
       console.log(vlu);
+
+      
+      this.http.post('http://127.0.0.1:8700/check_msg', {"sender": String(vlu), "message": textForm})
+      .subscribe((res) => {
+        console.log(res);
+      })
     }
   }
 
   uid(ix: any) {
     console.log(ix);
 
-    function ixy() {
+    setTimeout(() => {
       this.value = ix;
+    }, 750);
+  }
+
+  function($: any): void {
+
+    var index = 0;
+    
+    function initScroll() {
+      $(".message-wrap").animate({ 
+        scrollTop: $("main").height() 
+      }, 1000);
     }
-    // Delay Our Scope Change To Create A Smoother Transition
-    // $timeout(ixy, 750);
-  }
-
-  index = 0;
+    
+    function scroll() {
+      $(".message-wrap").animate({
+        scrollTop: 9000
+      }, 1000);
+    }
+    
+    $("input[type='submit']").click(function() {
+      scroll();
+    });
   
-  initScroll() {
-    $(".message-wrap").animate({ 
-      scrollTop: $("main").height() 
-    }, 1000);
-  }
-  
-  scroll() {
-    $(".message-wrap").animate({
-      scrollTop: 9000
-    }, 1000);
-  }
-  
-  $("input[type='submit']").click(function() {
-    scroll();
-  });
-
-  $("aside").find("li").click(function() {
-    initScroll();
-    $(".init").animate({
-      'opacity': '0'
-    }, 500);
-  });
-
-  $("aside").find("li").click(function() {
-    if (index == 1) {
-      index = 0;
-      $(".message-wrap").find(".message").css({
-        'opacity': '1'
-      });
-    } else {
-      index = 0;
-      $(".message-wrap").find(".message").css({
+    $("aside").find("li").click(function() {
+      initScroll();
+      $(".init").animate({
         'opacity': '0'
-      });
-      $(".loader").delay(500).animate({
-        'opacity': '1'
-      });
-      setTimeout(function() {
+      }, 500);
+    });
+  
+    $("aside").find("li").click(function() {
+      if (index == 1) {
         index = 0;
         $(".message-wrap").find(".message").css({
           'opacity': '1'
         });
-        $(".loader").animate({
+      } else {
+        index = 0;
+        $(".message-wrap").find(".message").css({
           'opacity': '0'
         });
-      }, 3000)
-    }
-  });
+        $(".loader").delay(500).animate({
+          'opacity': '1'
+        });
+        setTimeout(function() {
+          index = 0;
+          $(".message-wrap").find(".message").css({
+            'opacity': '1'
+          });
+          $(".loader").animate({
+            'opacity': '0'
+          });
+        }, 3000)
+      }
+    });
+  };
 }
