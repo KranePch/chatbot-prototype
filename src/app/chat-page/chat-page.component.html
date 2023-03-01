@@ -1,39 +1,51 @@
-<html ng-app='swankyChat' ng-cloak='true'>
-  <div class='container'>
-    <div class='inbox'>
+<html ng-app="swankyChat" ng-cloak="true">
+  <div class="container">
+    <div class="inbox">
       <aside>
-        <ul ng-controller='chatCtrl as chat'>
-          <div *ngFor='let chat of chats'>
-            <li (click)='uid(chat.id)'>
-              <img class='avatar' src='{{chat.avatar}}'>
-              <p class='username'>{{chat.username}}</p>
+        <ul>
+          <div *ngFor="let chat of chats">
+            <li (click)="uid(chat.id)">
+              <img class="avatar" src="{{ chat.avatar }}" />
+              <p class="username">{{ chat.username }}</p>
             </li>
           </div>
         </ul>
       </aside>
       <!-- https://angular.io/guide/ajs-quick-reference#ng-controller--component-decorator -->
-      <main ng-controller='chatCtrl as chat'>
-        <div class='init'>
-          <i class='fa fa-inbox'></i>
+      <main>
+        <div class="init">
+          <i class="fa fa-inbox"></i>
           <h4>Choose a conversation from the left</h4>
         </div>
-        <div class='loader'>
+        <div class="loader">
           <p></p>
           <h4>Loading</h4>
         </div>
         <!-- Set A Ng Repeat For Our Messages || Check To See If Our Value (Which Is Set Via Ng Click) Is Equal To The Id Of The Message List We Want To Show -->
-        
-        <div class='message-wrap' *ngFor='let message of chats' [hidden]='value != message.id'>
+
+        <div
+          class="message-wrap"
+          *ngFor="let message of chats"
+          [hidden]="value != message.id"
+        >
           <!-- Repeat Each Item In The Array Seperately -->
-          <div class='message' *ngFor='let item of message.messages; index as i'>
-            <p>{{item}}</p>
-            <img src='{{message.avatar}}'>
+          <div
+            class="message {{ item.type }}"
+            *ngFor="let item of message.messages; index as i"
+          >
+            <p>{{ item.word }}</p>
+            <!-- <img *ngIf="item.type == 'user'" src="{{ message.avatar }}" /> -->
           </div>
         </div>
         <footer>
           <form #textForm="ngForm" (ngSubmit)="add(textForm.value)">
-            <input type='text' placeholder='Enter a message' [(ngModel)]="text" [ngModelOptions]="{standalone: true}">
-            <input type='submit' value='Send'>
+            <input
+              type="text"
+              placeholder="Enter a message"
+              [(ngModel)]="text"
+              [ngModelOptions]="{ standalone: true }"
+            />
+            <input type="submit" value="Send" />
           </form>
         </footer>
       </main>
