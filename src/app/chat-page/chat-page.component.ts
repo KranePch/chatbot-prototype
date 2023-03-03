@@ -92,13 +92,14 @@ export class ChatPageComponent {
       // User send chat
       let userChat = { word: this.text, type: 'user' };
       this.chats[vlu].messages.push(userChat);
+      let msg = this.text;
       this.text = '';
-
+      
       // Call back from API
       this.http
-        .post<resultResponse>('http://192.168.10.207:8700/check_msg', {
-          sender: String(vlu),
-          message: textForm,
+        .post<resultResponse>('http://127.0.0.1:8700/complete', {
+          // sender: String(vlu),
+          message: msg,
         })
         .subscribe((res) => {
           console.log(res);
